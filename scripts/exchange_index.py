@@ -40,7 +40,9 @@ date_regex = re.compile("^[0-9]{4}-[0-9]{2}-[0-9]{2}")
 hash_regex = re.compile("#([0-9_a-z]+)", re.I | re.M | re.S)
 
 def cleanDescription(description):
-  return hash_regex.sub("", description)
+  description = description.replace("\r\n", "\n")
+  top_paragraph = description.split("\n\n")[0]
+  return top_paragraph
 
 def cleanupDate(date):
   try:
@@ -62,12 +64,19 @@ def getAuthor(record, yaml_filename):
   # If the record already exists, just keep it the same
   title = record["title"]
   for item in previous_data:
-    if item["title"] == title:
+    if item["title"] == title and item.get("author"):
+      item["description"] = record["description"]
       return item
 
   # Get commit details for this file.
   path = yaml_filename.replace("\\", "/")
-  commits = json.loads(urllib.request.urlopen(commits_url + "?path=" + path).read())
+
+  commits = None
+  try:
+    commits = json.loads(urllib.request.urlopen(commits_url + "?path=" + path).read())
+  except urllib.error.HTTPError as e:
+    print("HTTPError: %s" %e)
+
   print("Checking commit for %s\n" % path)
 
   # Commit is not yet know.
@@ -119,14 +128,18 @@ def build_markdown():
 
         description = data.get("description", "")
 
-        index.append(getAuthor({
+        record = {
           "title": data["name"],
           "author": data.get("author"),
           "description": cleanDescription(description),
           "link": os.path.join("/exchange/artifacts/pages/",
                                base_name.lower()).replace("\\", "/"),
           "tags": getTags(description),
-        }, yaml_filename))
+        }
+
+        record_with_author = getAuthor(record, yaml_filename)
+
+        index.append(record_with_author)
 
         md_filename = filename_name + ".md"
         with open(md_filename, "w") as fd:

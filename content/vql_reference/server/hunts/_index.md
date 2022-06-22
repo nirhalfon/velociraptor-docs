@@ -20,6 +20,8 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 hunt_id|A hunt id to read, if not specified we list all of them.|string
+offset|Start offset.|uint64
+count|Max number of results to return.|uint64
 
 ### Description
 

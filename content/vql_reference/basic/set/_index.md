@@ -19,8 +19,8 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-item||Any (required)
-field||string (required)
+item|A dict to set|Any (required)
+field|The field to set|string (required)
 value||Any (required)
 
 ### Description

@@ -19,9 +19,10 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-user||string (required)
-roles||list of string (required)
-password||string
+user|The user to create or update.|string (required)
+roles|List of roles to give the user.|list of string (required)
+password|A password to set for the user (If not using SSO this might be needed).|string
+orgs|One or more org IDs to grant access to.|list of string
 
 ### Description
 

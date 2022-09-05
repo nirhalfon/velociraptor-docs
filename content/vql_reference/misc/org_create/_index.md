@@ -24,5 +24,5 @@ org_id|An ID for the new org (if not set use a random ID).|string
 
 ### Description
 
-Creates a new organizaion.
+Creates a new organization.
 

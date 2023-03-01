@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-list|A list of items too filter|Any (required)
+list|A list of items to filter|Any (required)
 
 ### Description
 
